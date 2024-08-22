@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Giphygram</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=0, user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0082f9">
     <meta name="apple-mobile-web-app-title" content="Giphygram">
@@ -30,49 +31,71 @@
     <meta name="msapplication-square310x310logo" content="images/icons/mstile-310x310.png">
     <link rel="stylesheet" href="vendor/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
-
     <script defer src="vendor/jquery.min.js"></script>
     <script defer src="main.js"></script>
     <style>
-        #subscribe {
+        .navbar {
             display: flex;
-            gap: 10px; /* Adds space between the buttons */
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
         }
-        button {
-            padding: 0.5rem 2rem;
+
+        .navbar img {
+            margin-right: 10px;
+        }
+
+        .navbar .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .buttons button {
+            width: 100%;
+            padding: 0.5rem;
             font-size: 1rem;
             background: #66DE93;
             color: white;
             border: none;
             border-radius: 5px;
         }
-        #unsubscribe button {
-            background: #EB3F2F;
-            padding: 0.5rem 1.5rem;
-            font-size: 1rem;
+
+        #subscribe-button {
+            background: #66DE93;
         }
-        .navbar .ml-auto,
-        .navbar .ml-2 {
-            display: flex;
-            align-items: center;
+
+        #capture-button {
+            background: #66DE93;
         }
+
+        .navbar .icon {
+            margin-right: auto;
+        }
+
         .spinner {
             animation-name: spin;
             animation-duration: 2000ms;
             animation-iteration-count: infinite;
             animation-timing-function: linear;
         }
+
         @keyframes spin {
             from {
                 transform: rotate(0deg);
             }
+
             to {
                 transform: rotate(360deg);
             }
         }
+
         .hidden {
             display: none;
         }
+
         /* Camera Modal Styles */
         .modal {
             display: none;
@@ -83,58 +106,86 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgb(0, 0, 0);
             background-color: rgba(0, 0, 0, 0.4);
             padding-top: 60px;
         }
+
         .modal-content {
             background-color: #fefefe;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar .buttons {
+                width: 100%;
+            }
+
+            .modal-content {
+                width: 90%;
+                padding: 15px;
+            }
+
+            button {
+                font-size: 0.9rem;
+                padding: 0.5rem 1rem;
+            }
         }
     </style>
 </head>
+
 <body>
     <!-- Nav Header -->
     <header class="navbar sticky-top navbar-expand bg-primary navbar-dark">
         <!-- Logo -->
-        <img src="images/logo.png" alt="Giphygram" width="60" class="img-fluid navbar-brand">
-        
-        <!-- Add to Home Screen Button -->
-        <button id="install-button" style="display: none; margin-left: 10px;">Add to Home Screen</button>
+        <div class="icon">
+            <img src="images/logo.png" alt="Giphygram" width="60" class="img-fluid navbar-brand">
+        </div>
 
-        <div id="update" class="ml-auto">
-            <a class="icon" href="#update"><img width="25" src="images/flame.png"></a>
+        <!-- Flame Button -->
+        <div class="icon">
+            <a href="#update"><img width="25" src="images/flame.png"></a>
             <img class="icon d-none spinner" width="20" src="images/sync.png">
         </div>
-        
-        <!-- Subscribe and Unsubscribe Divs -->
-        <div id="subscribe" class="ml-2">
+
+        <!-- Buttons -->
+        <div class="buttons">
+            <button id="install-button" style="display: none;">Add to Home Screen</button>
             <button id="subscribe-button" onclick="subscribe()">Subscribe</button>
             <button id="capture-button" onclick="openCameraModal()">Capture Image</button>
         </div>
-        
-        
     </header>
+
     <!-- Modal for Camera Capture -->
     <div id="cameraModal" class="modal">
         <div class="modal-content">
-            <video id="cameraFeed" autoplay></video>
+            <video id="cameraFeed" autoplay style="width: 100%;"></video>
             <button id="captureImage" onclick="captureImage()">Capture</button>
         </div>
     </div>
+
     <!-- Main Container -->
     <main class="container p-1">
         <!-- Error Alert -->
         <div class="alert alert-danger text-center m-1" style="display:none;">
             Could not update Giphys
         </div>
+
         <!-- Display Captured Images -->
         <div id="capturedImages" class="row no-gutters"></div>
+
         <!-- Giphys -->
         <div id="giphys" class="row no-gutters"></div>
+
         <noscript>
             <div class="text-center mt-5">
                 Giphygram requires JavaScript to function.<br>
@@ -142,10 +193,11 @@
             </div>
         </noscript>
     </main>
+
     <script>
         let deferredPrompt;
 
-        // Listen for the beforeinstallprompt event
+        // Listen for the `beforeinstallprompt` event
         window.addEventListener('beforeinstallprompt', (event) => {
             // Prevent the mini-infobar from appearing on mobile
             event.preventDefault();
@@ -176,10 +228,11 @@
             });
         });
 
-        // Optionally: Add an event listener for the appinstalled event to detect when the app is installed
+        // Optionally: Add an event listener for the `appinstalled` event to detect when the app is installed
         window.addEventListener('appinstalled', () => {
             console.log('PWA installed');
         });
     </script>
 </body>
+
 </html>
