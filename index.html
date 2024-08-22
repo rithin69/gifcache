@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Giphygram</title>
     <meta charset="UTF-8">
@@ -34,68 +33,45 @@
     <script defer src="vendor/jquery.min.js"></script>
     <script defer src="main.js"></script>
     <style>
-        .navbar {
+        #subscribe {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 10px;
+            gap: 10px; /* Adds space between the buttons */
+            flex-wrap: wrap;
         }
-
-        .navbar img {
-            margin-bottom: 10px;
-        }
-
-        .navbar .buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-        }
-
-        .buttons button {
-            width: 100%;
-            padding: 0.5rem 0;
+        button {
+            padding: 0.5rem 1.5rem;
             font-size: 1rem;
             background: #66DE93;
             color: white;
             border: none;
             border-radius: 5px;
-        }
-
-        #subscribe-button {
-            background: #66DE93;
-        }
-
-        #capture-button {
-            background: #66DE93;
-        }
-
-        .navbar .icon {
             margin-bottom: 10px;
-            margin-left: auto;
         }
-
+        #unsubscribe button {
+            background: #EB3F2F;
+        }
+        .navbar .ml-auto,
+        .navbar .ml-2 {
+            display: flex;
+            align-items: center;
+        }
         .spinner {
             animation-name: spin;
             animation-duration: 2000ms;
             animation-iteration-count: infinite;
             animation-timing-function: linear;
         }
-
         @keyframes spin {
             from {
                 transform: rotate(0deg);
             }
-
             to {
                 transform: rotate(360deg);
             }
         }
-
         .hidden {
             display: none;
         }
-
         /* Camera Modal Styles */
         .modal {
             display: none;
@@ -109,7 +85,6 @@
             background-color: rgba(0, 0, 0, 0.4);
             padding-top: 60px;
         }
-
         .modal-content {
             background-color: #fefefe;
             margin: 5% auto;
@@ -118,22 +93,16 @@
             width: 100%;
             max-width: 400px;
         }
-
         /* Responsive styling */
         @media (max-width: 768px) {
-            .navbar {
-                align-items: center;
+            #subscribe {
+                flex-direction: column;
+                gap: 5px;
             }
-
-            .navbar .buttons {
-                width: 100%;
-            }
-
             .modal-content {
                 width: 90%;
                 padding: 15px;
             }
-
             button {
                 font-size: 0.9rem;
                 padding: 0.5rem 1rem;
@@ -141,27 +110,26 @@
         }
     </style>
 </head>
-
 <body>
     <!-- Nav Header -->
     <header class="navbar sticky-top navbar-expand bg-primary navbar-dark">
         <!-- Logo -->
         <img src="images/logo.png" alt="Giphygram" width="60" class="img-fluid navbar-brand">
+        
+        <!-- Add to Home Screen Button -->
+        <button id="install-button" style="display: none; margin-left: 10px;">Add to Home Screen</button>
 
-        <!-- Flame Button -->
-        <div class="icon">
-            <a href="#update"><img width="25" src="images/flame.png"></a>
+        <div id="update" class="ml-auto">
+            <a class="icon" href="#update"><img width="25" src="images/flame.png"></a>
             <img class="icon d-none spinner" width="20" src="images/sync.png">
         </div>
-
-        <!-- Buttons -->
-        <div class="buttons">
-            <button id="install-button" style="display: none;">Add to Home Screen</button>
+        
+        <!-- Subscribe and Unsubscribe Divs -->
+        <div id="subscribe" class="ml-2">
             <button id="subscribe-button" onclick="subscribe()">Subscribe</button>
             <button id="capture-button" onclick="openCameraModal()">Capture Image</button>
         </div>
     </header>
-
     <!-- Modal for Camera Capture -->
     <div id="cameraModal" class="modal">
         <div class="modal-content">
@@ -169,20 +137,16 @@
             <button id="captureImage" onclick="captureImage()">Capture</button>
         </div>
     </div>
-
     <!-- Main Container -->
     <main class="container p-1">
         <!-- Error Alert -->
         <div class="alert alert-danger text-center m-1" style="display:none;">
             Could not update Giphys
         </div>
-
         <!-- Display Captured Images -->
         <div id="capturedImages" class="row no-gutters"></div>
-
         <!-- Giphys -->
         <div id="giphys" class="row no-gutters"></div>
-
         <noscript>
             <div class="text-center mt-5">
                 Giphygram requires JavaScript to function.<br>
@@ -190,7 +154,6 @@
             </div>
         </noscript>
     </main>
-
     <script>
         let deferredPrompt;
 
@@ -231,5 +194,4 @@
         });
     </script>
 </body>
-
 </html>
