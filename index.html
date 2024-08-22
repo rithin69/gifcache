@@ -36,13 +36,13 @@
     <style>
         .navbar {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            justify-content: space-between;
             padding: 10px;
         }
 
         .navbar img {
-            margin-bottom: 10px;
+            margin-right: 10px;
         }
 
         .navbar .buttons {
@@ -50,11 +50,12 @@
             flex-direction: column;
             gap: 10px;
             width: 100%;
+            max-width: 200px;
         }
 
         .buttons button {
             width: 100%;
-            padding: 0.5rem 0;
+            padding: 0.5rem;
             font-size: 1rem;
             background: #66DE93;
             color: white;
@@ -71,8 +72,7 @@
         }
 
         .navbar .icon {
-            margin-bottom: 10px;
-            margin-left: auto;
+            margin-right: auto;
         }
 
         .spinner {
@@ -122,6 +122,7 @@
         /* Responsive styling */
         @media (max-width: 768px) {
             .navbar {
+                flex-direction: column;
                 align-items: center;
             }
 
@@ -146,7 +147,9 @@
     <!-- Nav Header -->
     <header class="navbar sticky-top navbar-expand bg-primary navbar-dark">
         <!-- Logo -->
-        <img src="images/logo.png" alt="Giphygram" width="60" class="img-fluid navbar-brand">
+        <div class="icon">
+            <img src="images/logo.png" alt="Giphygram" width="60" class="img-fluid navbar-brand">
+        </div>
 
         <!-- Flame Button -->
         <div class="icon">
