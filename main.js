@@ -1,7 +1,7 @@
 let swReg;
 
-const serverUrl = 'http://localhost:3333';
-
+// const serverUrl = 'http://localhost:3333';
+const serverUrl ="http://192.168.56.1:3333"
 
 
 // Send a message to the Service Worker to load images from the cache
