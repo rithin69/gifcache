@@ -145,7 +145,7 @@
     <script>
         let deferredPrompt;
 
-        // Listen for the `beforeinstallprompt` event
+        // Listen for the beforeinstallprompt event
         window.addEventListener('beforeinstallprompt', (event) => {
             // Prevent the mini-infobar from appearing on mobile
             event.preventDefault();
@@ -176,7 +176,7 @@
             });
         });
 
-        // Optionally: Add an event listener for the `appinstalled` event to detect when the app is installed
+        // Optionally: Add an event listener for the appinstalled event to detect when the app is installed
         window.addEventListener('appinstalled', () => {
             console.log('PWA installed');
         });
